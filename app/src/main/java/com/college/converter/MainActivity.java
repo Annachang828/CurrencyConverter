@@ -31,32 +31,27 @@ public class MainActivity extends AppCompatActivity {
 
     static private final Float CONVERSION_RATE = 0.80F;
     static final String TAG = "MainActivity";
+    private ActivityMainBinding binding; // Declare the binding variable
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Declare the binding variable
-        com.college.converter.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater()); // Inflate the layout using binding
+        // Inflate the layout using binding
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot()); // Set the root view from the binding
 
         Log.i(TAG, "onCreate() entry");
-        setContentView(R.layout.activity_main);
 
         binding.convertButton.setOnClickListener(this::convertCurrency);
 
-
         Log.i(TAG, "onCreate() exit");
-
     }
 
     public void convertCurrency(View view) {
         Log.i(TAG, "convertCurrency() entry");
 
-        EditText inputView = findViewById(R.id.entryId);
-
-        String inputAmount = inputView.getText().toString();
-
-        TextView resultView = findViewById(R.id.resultId);
+        String inputAmount = binding.entryId.getText().toString();
 
         String resultTrailer = getString(R.string.result_trailer);
 
@@ -65,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
             Float resultFloat = inputAmountDecimal * CONVERSION_RATE;
 
-            resultView.setText( resultFloat + resultTrailer);
+            binding.resultId.setText(resultFloat + resultTrailer);
         }
         Log.i(TAG, "convertCurrency() exit");
     }
