@@ -1,12 +1,17 @@
 package com.college.converter;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.college.converter.databinding.ActivityMainBinding;
 
 /*
     TODOs:
@@ -23,33 +28,40 @@ import android.widget.TextView;
 */
 
 public class MainActivity extends AppCompatActivity {
+
     static private final Float CONVERSION_RATE = 0.80F;
+    static final String TAG = "MainActivity";
+    private ActivityMainBinding binding; // Declare the binding variable
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        Button buttonConvert = findViewById(R.id.convertButton);
+        // Inflate the layout using binding
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot()); // Set the root view from the binding
 
-        buttonConvert.setOnClickListener( view ->  {
-            convertCurrency(view);
-        } );
+        Log.i(TAG, "onCreate() entry");
+
+        binding.convertButton.setOnClickListener(this::convertCurrency);
+
+        Log.i(TAG, "onCreate() exit");
     }
 
     public void convertCurrency(View view) {
+        Log.i(TAG, "convertCurrency() entry");
 
-        EditText inputView = findViewById(R.id.entryId);
+        String inputAmount = binding.entryId.getText().toString();
 
-        String inputAmount = inputView.getText().toString();
-
-        TextView resultView = findViewById(R.id.resultId);
+        String resultTrailer = getString(R.string.result_trailer);
 
         if (!inputAmount.isEmpty()) {
             Float inputAmountDecimal = Float.valueOf(inputAmount);
 
             Float resultFloat = inputAmountDecimal * CONVERSION_RATE;
 
-            resultView.setText( resultFloat + " Euros" );
+            binding.resultId.setText(resultFloat + resultTrailer);
         }
+        Log.i(TAG, "convertCurrency() exit");
     }
 }
